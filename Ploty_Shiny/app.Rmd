@@ -1,0 +1,41 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(corrgram)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(caret)
+library(ModelMetrics)
+library(stats4)
+library(caTools)
+library(shiny)
+
+# World happiness report 2019
+Happiness <- read.csv("happiness_full.csv")
+str(Happiness)
+
+# Convert categorical variables to factors 
+Happiness$Continent <- as.factor(Happiness$Continent)
+Happiness$Country <- as.factor(Happiness$Country)
+Happiness$Year <- as.factor(Happiness$Year)
+
+# Create a correlation plot
+# Finding the correlation between numerical columns
+Num.cols <- sapply(Happiness, is.numeric)
+```
+
+```{r}
+
+# install.packages('rsconnect')
+library(rsconnect)
+rsconnect::setAccountInfo(name='ziheyang', token='07A01830B6982C9D8372F35ABBD0E7A4', secret='cObn9TFJAYklAZDYXj0leGEmX64XWRRz29iCw8Tc')
+
+# runApp()
+deployApp(appName="prediction")
+```
+
