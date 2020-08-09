@@ -1,0 +1,217 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+#install.packages("leaflet")
+# load packages
+library(dplyr)
+library(ggplot2)
+library(rjson)
+library(jsonlite)
+library(leaflet)
+library(RCurl)
+```
+
+
+```{r}
+r_birthplace_map <- leaflet() %>%
+  addTiles() %>%  # use the default base map which is OpenStreetMap tiles
+  addMarkers(lng=40.730610, lat=-73.935242,
+             popup="The birthplace of R")
+r_birthplace_map
+```
+
+```{r}
+myFile = "events_for_maps.csv"
+water_data_df <- read.csv(myFile)
+water_data_df[1:200,]
+```
+
+```{r}
+# create leaflet map
+# water_locations_map <- leaflet(water_data_df) %>%
+#  addTiles() %>%
+#  addCircleMarkers(lng = ~longitude,
+#                   lat = ~latitude)
+# water_locations_map
+```
+
+
+
+```{r}
+#leaflet(water_data_df) %>%
+#  addProviderTiles("CartoDB.Positron") %>%
+#  addMarkers(lng = ~longitude, lat = ~latitude,
+#             popup = ~city)
+```
+
+```{r}
+#leaflet(water_data_df) %>%
+#  addProviderTiles("Stamen.Terrain") %>%
+#  addMarkers(lng = ~longitude, lat = ~latitude,
+#             popup = ~paste0(city, "<br/>Category: ", category))
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+
+```{r}
+table(water_data_df$for_kids)
+```
+
+
+
+```{r}
+# water_data_df
+water_data_df$time <- factor(water_data_df$time)
+
+new <- c("orange", "green")[water_data_df$for_kids]
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = new
+)
+
+unique_markers_map <- leaflet(water_data_df) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addAwesomeMarkers(lng=~longitude, lat=~latitude, icon=icons,
+                    popup=~city,
+                    label=~as.character(city))%>% 
+  addLegend("bottomright", colors= c("green", "orange"), labels=c("Yes", "No"), title="Kids-friendly Event") 
+
+library(htmlwidgets)
+saveWidget(widget=unique_markers_map,
+           file="maps_kids.html",
+           selfcontained=TRUE)
+```
+
+```{r}
+pal <- colorFactor(c("orange", "green"),
+                   domain = unique(water_data_df$is_free))
+unique_markers_map_2 <- leaflet(water_data_df) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(
+    color = ~pal(is_free),
+    stroke = FALSE, fillOpacity = 0.5,
+    lng = ~longitude, lat = ~latitude,
+    label = ~as.character(is_free)
+  ) %>% 
+  addLegend("bottomright", colors= c("green", "orange"), labels=c("Free", "Not Free"), title="Free Event") 
+
+library(htmlwidgets)
+saveWidget(widget=unique_markers_map_2,
+           file="maps_free.html",
+           selfcontained=TRUE)
+```
+
+```{r}
+# m <- leaflet(water_data_df) %>% addProviderTiles(providers$CartoDB.DarkMatter) %>% 
+#  addCircles(~longitude, ~latitude, popup=water_data_df$city, weight = 3, radius=40, 
+#                 color="#ffa500", stroke = TRUE, fillOpacity = 0.8) 
+# m
+```
+
+```{r}
+table(water_data_df$category)
+```
+
+
+```{r}
+cof <- colorFactor(c("green", "blue", "red"), domain=c("afternoon", "evening", "morning"))
+m <- leaflet(water_data_df) %>% addProviderTiles(providers$CartoDB.DarkMatter) %>% 
+  addCircles(~longitude, ~latitude, popup=water_data_df$city, weight = 10, radius=50, 
+                 color=~cof(time), stroke = F, fillOpacity = 1)   %>% 
+  addLegend("bottomright", colors= c("red", "green", "blue"), labels=c("Morning", "Afternoon", "Evening"), title="Event Time") 
+m
+
+library(htmlwidgets)
+saveWidget(widget=m,
+           file="maps_time.html",
+           selfcontained=TRUE)
+```
+
+
+```{r}
+df = water_data_df
+map <- leaflet::leaflet() %>%
+  leaflet::addProviderTiles(providers$OpenStreetMap)
+
+map  # show the ma
+```
+
+```{r}
+assign_markers <- function(
+  map_object,
+  ofsted_group_spdf,
+  group_name,
+  marker_col = "blue"  # will default to blue
+) {
+  
+  leaflet::addAwesomeMarkers(
+    map = map_object,  # the base map we created first
+    data = ofsted_group_spdf,  # the spatial points data frame
+    group =  group_name,  # the name for the marker grouping
+    popup = ~get_popup_content(ofsted_group_spdf),  # our popup function
+    icon = awesomeIcons(
+      library = "ion",  # the ion set of icons
+      icon = ifelse(  # conditional icon
+        test = ofsted_group_spdf@data$phase == "Primary",
+        yes = "ion-arrow-down-b",  # primary gets a down arrow
+        no = "ion-arrow-up-b"  # up arrows for secondary schools
+      ),
+      iconColor = "white",
+      markerColor = marker_col  # you can specify a colout for the marker 
+    )
+  )  
+}
+
+map_clusters <- map %>% 
+  # add the markers (order is the order the checkboxes will appear on the map)
+  assign_markers(  # use our function for adding markers
+    ofsted_group_spdf = ofsted_outst,
+    group_name = "Outstanding"
+  ) %>%
+  leaflet::addAwesomeMarkers(  # using addAwesomeMarkers function so you can...
+    data = ofsted_good,
+    clusterOptions = markerClusterOptions(),  # ...see how clusters are added
+    group =  "Good",
+    popup = ~get_popup_content(ofsted_good),
+    icon = awesomeIcons(
+      library = "ion",
+      icon = ifelse(
+        test = ofsted_good@data$phase == "Primary",
+        yes = "ion-arrow-down-b",
+        no = "ion-arrow-up-b"
+      ),
+      iconColor = "white",
+      markerColor = "lightblue"
+    )
+  ) %>%
+  assign_markers(  # use our function for adding markers
+    ofsted_group_spdf = ofsted_other,
+    group_name = "Other",
+    marker_col = "red"
+  ) %>% 
+  # controlling the groups
+  leaflet::addLayersControl(
+    overlayGroups = c("Outstanding", "Good", "Other"),  # add these layers
+    options = layersControlOptions(collapsed = FALSE)  # expand on hover?
+  ) %>% 
+  hideGroup(c("Outstanding", "Other"))  # turn these off by default
+    
+map_clusters # show the map
+```
+

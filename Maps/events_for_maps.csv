@@ -1,0 +1,251 @@
+category,cost,is_free,is_official,latitude,location.state,longitude,event_date,repeat_times,has_image,description_words,duration,day_of_week,time,is_attractive,city,for_kids
+other,,True,False,40.723765,NY,-73.9939903,2017-12-01,1,True,26,30,Fri,morning,True,New York,False
+other,,True,False,40.74154650000001,NY,-73.9889978,2017-12-01,1,True,32,22,Fri,morning,True,New York,False
+visual-arts,,True,False,40.7493555,NY,-74.0046948,2017-12-07,1,True,29,28,Thurs,morning,True,New York,False
+music,15.0,False,False,40.7312056,NY,-74.0016722,2017-12-09,1,True,25,15,Sat,morning,True,New York,False
+visual-arts,,True,False,40.736555100000004,NY,-74.0090194,2017-12-09,1,True,20,21,Sat,afternoon,False,New York,False
+other,,True,False,40.7209348,NY,-73.9876515,2017-12-14,2,True,24,7,Thurs,morning,True,New York,False
+nightlife,199.0,False,False,40.726033799999996,NY,-73.9914735,2017-12-20,1,True,29,0,Wed,evening,False,New York,False
+nightlife,79.0,False,False,40.740984999999995,NY,-73.981317,2017-12-20,2,True,22,0,Wed,evening,True,New York,False
+nightlife,89.0,False,False,40.728795899999994,NY,-74.00473690000003,2017-12-20,1,True,27,0,Wed,evening,False,New York,False
+fashion,,True,False,40.7138866,NY,-74.0062626,2017-12-20,1,True,27,0,Wed,morning,False,New York,False
+film,7.0,False,False,40.7246322,NY,-73.9900275,2017-12-20,1,True,20,0,Wed,afternoon,False,New York,False
+food-and-drink,,True,False,40.746612,NY,-73.9880909,2017-12-20,1,True,24,0,Wed,afternoon,False,New York,False
+food-and-drink,55.0,False,False,40.726170445082396,NY,-73.98564904723871,2017-12-20,1,True,30,0,Wed,evening,False,New York,False
+performing-arts,10.0,False,False,40.73890460000001,NY,-73.980822,2017-12-20,1,True,25,0,Wed,evening,False,New York,False
+performing-arts,,True,False,40.719128999999995,NY,-73.984509,2017-12-20,1,True,25,0,Wed,evening,False,New York,False
+lectures-books,,True,False,40.7263467,NY,-73.99113559999998,2017-12-20,1,True,30,0,Wed,evening,False,New York,False
+food-and-drink,35.0,False,False,40.7221885,NY,-73.9946104,2017-12-20,1,True,28,0,Wed,evening,True,New York,False
+nightlife,75.0,False,False,40.7159364,NY,-73.99678940000003,2017-12-21,1,True,25,0,Thurs,evening,False,New York,False
+nightlife,25.0,False,False,40.7138866,NY,-74.0062626,2017-12-21,1,True,28,0,Thurs,evening,False,New York,False
+nightlife,125.0,False,False,40.7244552,NY,-74.00805340000002,2017-12-21,1,True,28,0,Thurs,evening,False,New York,False
+other,,True,False,40.7230666,NY,-73.99380479999998,2017-12-21,2,True,27,30,Thurs,morning,True,New York,False
+charities,15.0,False,False,40.7191552,NY,-73.9862607,2017-12-21,1,True,29,0,Thurs,afternoon,False,New York,False
+music,,True,False,40.7343405,NY,-73.9849615,2017-12-21,1,True,23,0,Thurs,evening,False,New York,False
+nightlife,0.0,False,False,40.7085891,NY,-74.01362759999998,2017-12-21,1,True,28,0,Thurs,evening,False,New York,False
+nightlife,109.0,False,False,40.741777899999995,NY,-74.00579499999998,2017-12-22,1,True,27,0,Fri,evening,False,New York,False
+performing-arts,,True,False,40.7293456,NY,-73.9787662,2017-12-22,1,True,27,0,Fri,evening,False,New York,False
+music,,False,False,40.743051,NY,-74.00587800000002,2017-12-22,1,True,7,0,Fri,evening,True,New York,False
+nightlife,15.0,False,False,40.7468631,NY,-73.9823142,2017-12-22,1,True,30,0,Fri,evening,True,New York,False
+performing-arts,9.0,False,False,40.7258626,NY,-73.994291,2017-12-22,1,True,26,0,Fri,evening,False,New York,False
+festivals-fairs,0.0,False,False,40.731370743568,NY,-73.98318647280401,2017-12-23,1,True,21,4,Sat,afternoon,False,New York,False
+music,,False,False,40.7398304,NY,-73.984981,2017-12-23,1,True,7,0,Sat,evening,False,New York,False
+nightlife,10.0,False,False,40.72525,NY,-73.98444920000001,2017-12-23,1,True,28,0,Sat,evening,False,New York,False
+other,,True,False,40.7413722,NY,-73.98913329999998,2017-12-24,1,True,20,0,Sun,morning,True,New York,False
+food-and-drink,,False,False,40.7219097,NY,-74.0039054,2017-12-24,1,True,25,7,Sun,morning,True,New York,False
+nightlife,20.0,False,False,40.739237,NY,-74.0019412,2017-12-24,1,True,32,0,Sun,evening,False,New York,False
+nightlife,20.0,False,False,40.743989,NY,-74.0061877,2017-12-24,1,True,30,0,Sun,evening,False,New York,False
+food-and-drink,25.0,False,False,40.731477500000004,NY,-74.0024921,2017-12-25,1,True,26,0,Mon,afternoon,False,New York,False
+food-and-drink,,False,False,40.737054,NY,-74.00390379999997,2017-12-26,1,True,25,0,Tues,afternoon,True,New York,False
+music,,False,False,40.743051,NY,-74.00587800000002,2017-12-26,1,True,5,0,Tues,evening,False,New York,False
+performing-arts,,True,False,40.7265315,NY,-74.0043743,2017-12-26,1,True,25,0,Tues,evening,False,New York,False
+music,20.0,False,False,40.745815,NY,-73.982968,2017-12-27,1,True,21,0,Wed,evening,False,New York,False
+nightlife,120.0,False,False,40.7086026,NY,-74.013599,2017-12-28,1,True,28,0,Thurs,evening,False,New York,False
+other,15.0,False,False,40.7267479,NY,-73.9960246,2017-12-29,1,True,30,0,Fri,afternoon,False,New York,False
+nightlife,6.75,False,False,40.722845899999996,NY,-73.9898209,2017-12-29,1,True,26,0,Fri,evening,False,New York,False
+performing-arts,20.0,False,False,40.7404289866457,NY,-73.98468017578121,2017-12-30,2,True,25,0,Sat,evening,True,New York,False
+nightlife,30.0,False,False,40.73549439999999,NY,-73.97426999999998,2017-12-30,1,True,22,0,Sat,evening,True,New York,False
+performing-arts,,True,False,40.745290999999995,NY,-73.9864156,2017-12-31,1,True,29,8,Sun,afternoon,False,New York,False
+food-and-drink,,False,False,40.74070510000001,NY,-73.9910605,2017-12-31,1,True,28,0,Sun,afternoon,False,New York,False
+food-and-drink,65.0,False,False,40.74211070000001,NY,-73.984741,2017-12-31,1,True,27,0,Sun,afternoon,False,New York,False
+nightlife,149.0,False,False,40.7304781,NY,-74.01116359999997,2017-12-31,1,True,24,0,Sun,evening,True,New York,False
+nightlife,99.0,False,False,40.709932,NY,-73.9846017,2017-12-31,1,True,26,0,Sun,evening,True,New York,False
+nightlife,35.0,False,False,40.7423311,NY,-74.00347909999998,2017-12-31,1,True,22,0,Sun,evening,False,New York,False
+nightlife,80.0,False,False,40.7420424869865,NY,-74.003503324823,2017-12-31,1,True,23,0,Sun,evening,False,New York,False
+nightlife,129.0,False,False,40.729124799999994,NY,-74.0114392,2017-12-31,1,True,25,0,Sun,evening,True,New York,False
+nightlife,,False,False,40.709827839229895,NY,-73.9853025502194,2017-12-31,1,True,20,0,Sun,evening,True,New York,False
+nightlife,159.0,False,False,40.7304781,NY,-74.01116359999997,2017-12-31,1,True,23,0,Sun,evening,True,New York,False
+nightlife,500.0,False,False,40.72307,NY,-73.99203,2017-12-31,1,True,24,0,Sun,evening,False,New York,False
+nightlife,125.0,False,False,40.7423311,NY,-74.00347909999998,2017-12-31,1,True,27,0,Sun,evening,False,New York,False
+nightlife,179.0,False,False,40.709932,NY,-73.9846017,2017-12-31,1,True,23,0,Sun,evening,False,New York,False
+food-and-drink,500.0,False,False,40.7230205730996,NY,-73.9919801428914,2017-12-31,1,True,27,0,Sun,evening,False,New York,False
+nightlife,135.0,False,False,40.7499875,NY,-74.0027094,2017-12-31,1,True,26,0,Sun,evening,False,New York,False
+nightlife,150.0,False,False,40.7499875,NY,-74.0027094,2017-12-31,1,True,26,0,Sun,evening,False,New York,False
+nightlife,40.0,False,False,40.74031,NY,-74.0055189319355,2017-12-31,1,True,25,0,Sun,evening,False,New York,False
+nightlife,40.0,False,False,40.7160494,NY,-73.9971023,2017-12-31,1,True,27,0,Sun,evening,False,New York,False
+nightlife,109.0,False,False,40.741777899999995,NY,-74.00579499999998,2017-12-31,1,True,29,0,Sun,evening,False,New York,False
+food-and-drink,100.0,False,False,40.740984999999995,NY,-73.981317,2017-12-31,1,True,29,0,Sun,evening,False,New York,False
+nightlife,129.0,False,False,40.7357198,NY,-73.9747993,2017-12-31,1,True,22,0,Sun,evening,True,New York,False
+food-and-drink,125.0,False,False,40.7437803,NY,-73.9827379,2017-12-31,1,True,30,0,Sun,evening,False,New York,False
+nightlife,200.0,False,False,40.7230205730996,NY,-73.9919801428914,2017-12-31,1,True,25,0,Sun,evening,False,New York,False
+nightlife,150.0,False,False,40.72307,NY,-73.99203,2017-12-31,1,True,7,0,Sun,evening,False,New York,False
+nightlife,45.0,False,False,40.7237425,NY,-74.0041482,2017-12-31,1,True,27,0,Sun,evening,False,New York,False
+nightlife,129.0,False,False,40.73549439999999,NY,-73.97426999999998,2017-12-31,1,True,23,0,Sun,evening,True,New York,False
+festivals-fairs,20.0,False,False,40.7499891,NY,-73.97733259999998,2017-12-31,1,True,23,0,Sun,evening,False,New York,False
+nightlife,40.0,False,False,40.7086026,NY,-74.013599,2017-12-31,1,True,28,0,Sun,evening,False,New York,False
+nightlife,30.0,False,False,40.7451558,NY,-73.9761847,2017-12-31,1,True,27,0,Sun,evening,False,New York,False
+nightlife,100.0,False,False,40.730379,NY,-73.99462,2017-12-31,1,True,26,0,Sun,evening,False,New York,False
+nightlife,99.0,False,False,40.7397342,NY,-74.0070218,2017-12-31,1,True,30,0,Sun,evening,False,New York,False
+food-and-drink,39.0,False,False,40.725273200000004,NY,-74.0073909,2018-01-02,1,True,26,0,Tues,evening,False,New York,False
+food-and-drink,49.0,False,False,40.729778100000004,NY,-73.9865052,2018-01-02,1,True,23,0,Tues,evening,False,New York,False
+nightlife,49.0,False,False,40.7256654,NY,-73.9995465,2018-01-02,2,False,27,0,Tues,evening,True,New York,False
+performing-arts,,True,False,40.7265315,NY,-74.0043743,2018-01-02,1,True,27,0,Tues,evening,True,New York,False
+film,7.0,False,False,40.7246322,NY,-73.9900275,2018-01-03,1,True,25,0,Wed,afternoon,False,New York,False
+performing-arts,,True,False,40.7370304,NY,-73.9925067,2018-01-03,1,True,28,0,Wed,afternoon,False,New York,False
+other,10.0,False,False,40.746612,NY,-73.9880909,2018-01-03,1,True,26,0,Wed,afternoon,False,New York,False
+food-and-drink,30.0,False,False,40.740167,NY,-73.995801,2018-01-04,1,True,19,0,Thurs,evening,False,New York,False
+film,20.0,False,False,40.719139500000004,NY,-74.0060905,2018-01-04,1,True,25,0,Thurs,evening,False,New York,False
+sports-active-life,,True,False,40.747616,NY,-73.9820335,2018-01-05,1,True,26,0,Fri,evening,False,New York,False
+nightlife,,True,False,40.7216929,NY,-73.9931265,2018-01-05,3,True,28,0,Fri,evening,True,New York,False
+fashion,,True,False,40.746417,NY,-73.983171,2018-01-06,1,True,11,0,Sat,evening,False,New York,False
+kids-family,,True,False,40.731370743568,NY,-73.98318647280401,2018-01-06,1,True,25,0,Sat,afternoon,False,New York,True
+visual-arts,10.0,False,False,40.69867720000001,NY,-73.98594140000002,2017-12-22,1,True,28,0,Fri,afternoon,True,Brooklyn,False
+performing-arts,,False,False,40.6710865,NY,-73.9852,2017-12-22,1,True,23,0,Fri,evening,True,Brooklyn,False
+music,20.0,False,False,40.7268982612292,NY,-73.9528847539673,2017-12-22,1,True,19,0,Fri,evening,True,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2017-12-23,1,True,26,0,Sat,evening,False,Brooklyn,False
+other,29.0,False,False,40.686532,NY,-73.9776769,2017-12-29,1,True,25,0,Fri,morning,False,Brooklyn,False
+nightlife,5.0,False,False,40.6785007,NY,-73.9833014,2017-12-29,1,True,28,0,Fri,evening,True,Brooklyn,False
+food-and-drink,100.0,False,False,40.6843693,NY,-73.9770276,2017-12-30,1,True,22,0,Sat,afternoon,True,Brooklyn,False
+music,,False,False,40.7142969,NY,-73.9558663,2017-12-30,1,True,7,0,Sat,evening,False,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2017-12-30,1,True,26,0,Sat,evening,False,Brooklyn,False
+nightlife,150.0,False,False,40.7172592,NY,-73.95510870000003,2017-12-31,1,True,30,0,Sun,evening,False,Brooklyn,False
+food-and-drink,75.0,False,False,40.67302700000001,NY,-73.956828,2017-12-31,2,True,29,0,Sun,evening,True,Brooklyn,False
+sports-active-life,79.0,False,False,40.6825756316779,NY,-73.97516021967729,2018-01-06,1,True,28,0,Sat,afternoon,True,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-01-08,1,True,26,0,Mon,evening,True,Brooklyn,False
+food-and-drink,,False,False,40.6800318505238,NY,-73.97413662977321,2018-01-10,1,True,29,0,Wed,afternoon,True,Brooklyn,False
+visual-arts,,True,False,40.6678019,NY,-73.9843692,2018-01-11,2,True,24,0,Thurs,evening,True,Brooklyn,False
+music,5.0,False,False,40.6861547,NY,-73.9773518,2018-01-13,1,True,27,0,Sat,afternoon,True,Brooklyn,False
+music,15.0,False,False,40.7268982612292,NY,-73.9528847539673,2018-01-14,1,True,25,0,Sun,evening,False,Brooklyn,False
+kids-family,0.0,False,False,40.6692032,NY,-73.973324,2018-01-15,1,True,24,0,Mon,afternoon,False,Brooklyn,True
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-01-15,1,True,29,0,Mon,evening,True,Brooklyn,False
+charities,20.0,False,False,40.721588,NY,-73.958377,2018-01-18,1,True,27,0,Thurs,evening,False,Brooklyn,False
+nightlife,,True,False,40.710437,NY,-73.953916,2018-01-18,1,True,26,0,Thurs,evening,False,Brooklyn,False
+visual-arts,,True,False,40.6514774,NY,-74.0140878,2018-01-19,1,True,24,0,Fri,evening,False,Brooklyn,False
+music,,True,False,40.6749687,NY,-73.97597809999998,2018-01-19,1,True,30,0,Fri,evening,False,Brooklyn,False
+music,15.0,False,False,40.7221151,NY,-73.9576675,2018-01-19,1,True,6,0,Fri,evening,False,Brooklyn,False
+other,250.0,False,False,40.68131939999999,NY,-74.00422569999998,2018-01-21,1,True,26,0,Sun,morning,False,Brooklyn,False
+other,250.0,False,False,40.68131939999999,NY,-74.00422569999998,2018-01-21,1,True,28,0,Sun,morning,True,Brooklyn,False
+performing-arts,,True,False,40.6861547,NY,-73.9773518,2018-01-21,1,True,26,0,Sun,afternoon,False,Brooklyn,False
+other,150.0,False,False,40.68131939999999,NY,-74.00422569999998,2018-01-21,1,True,26,0,Sun,afternoon,False,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-01-22,1,True,28,0,Mon,evening,True,Brooklyn,False
+lectures-books,,True,False,40.6869153,NY,-73.98558680000002,2018-01-24,1,True,25,0,Wed,afternoon,False,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-01-24,1,True,29,0,Wed,evening,True,Brooklyn,False
+music,10.0,False,False,40.7220265,NY,-73.9591725,2018-01-25,1,True,25,0,Thurs,evening,False,Brooklyn,False
+kids-family,29.0,False,False,40.671444,NY,-73.98477,2018-01-26,1,True,23,0,Fri,evening,True,Brooklyn,True
+other,,True,False,40.6712969411348,NY,-74.01130914688109,2018-01-27,1,False,30,1,Sat,morning,True,Brooklyn,False
+food-and-drink,19.0,False,False,40.656469,NY,-74.00841109999998,2018-01-27,1,True,25,0,Sat,morning,True,Brooklyn,False
+lectures-books,5.0,False,False,40.6979862,NY,-73.99179079999998,2018-01-27,1,True,22,0,Sat,afternoon,True,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-01-27,1,True,27,0,Sat,evening,True,Brooklyn,False
+performing-arts,8.0,False,False,40.67604160000001,NY,-73.9801243,2018-01-27,1,True,23,0,Sat,evening,False,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-01-29,1,True,26,0,Mon,evening,False,Brooklyn,False
+music,10.0,False,False,40.7142969,NY,-73.9558663,2018-01-30,1,True,6,0,Tues,evening,False,Brooklyn,False
+food-and-drink,,True,True,40.6657016935431,NY,-73.982548767788,2018-01-30,1,True,24,0,Tues,evening,True,Brooklyn,False
+performing-arts,12.5,False,False,40.691265,NY,-73.981225,2018-01-31,1,True,25,0,Wed,morning,True,Brooklyn,False
+other,20.0,False,False,40.683269,NY,-73.95015500000002,2018-01-31,1,True,26,0,Wed,evening,False,Brooklyn,False
+performing-arts,,True,False,40.6861547,NY,-73.9773518,2018-02-01,1,True,22,0,Thurs,evening,False,Brooklyn,False
+lectures-books,,True,False,40.7180854,NY,-73.95025059999998,2018-02-01,1,True,29,0,Thurs,evening,False,Brooklyn,False
+music,,False,False,40.7142969,NY,-73.9558663,2018-02-01,1,True,5,0,Thurs,evening,False,Brooklyn,False
+nightlife,10.0,False,False,40.7218937792125,NY,-73.9575488529698,2018-02-03,1,True,28,0,Sat,evening,True,Brooklyn,False
+food-and-drink,,True,False,40.7172592,NY,-73.95510870000003,2018-02-04,1,True,26,0,Sun,afternoon,True,Brooklyn,False
+food-and-drink,30.0,False,False,40.654557000000004,NY,-73.959409,2018-02-04,1,True,29,0,Sun,afternoon,False,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-02-05,1,True,27,0,Mon,evening,False,Brooklyn,False
+music,,True,False,40.694104700000004,NY,-73.96176690000001,2018-02-06,1,True,28,0,Tues,evening,False,Brooklyn,False
+lectures-books,,True,False,40.6805262,NY,-73.97520899999998,2018-02-06,1,True,17,0,Tues,afternoon,False,Brooklyn,False
+performing-arts,,True,False,40.701728700000004,NY,-73.9869552,2018-02-06,1,True,29,0,Tues,evening,False,Brooklyn,False
+other,,True,True,40.679026799999995,NY,-73.98307700000002,2018-02-07,1,True,24,0,Wed,evening,True,Brooklyn,False
+other,6.0,False,False,40.67604160000001,NY,-73.9801243,2018-02-07,1,True,26,0,Wed,evening,False,Brooklyn,False
+food-and-drink,68.27,False,False,40.6635851585719,NY,-73.9896342209015,2018-02-09,1,True,26,0,Fri,morning,False,Brooklyn,False
+performing-arts,,True,False,40.7145661,NY,-73.96096130000002,2018-02-09,1,True,22,0,Fri,evening,False,Brooklyn,False
+music,15.0,False,False,40.7268982612292,NY,-73.9528847539673,2018-02-09,1,True,25,0,Fri,evening,False,Brooklyn,False
+visual-arts,16.0,False,False,40.6714058033045,NY,-73.96367787989429,2018-02-10,1,True,23,29,Sat,evening,True,Brooklyn,False
+food-and-drink,49.99,False,False,40.681436700000006,NY,-74.0071505,2018-02-10,1,True,24,0,Sat,afternoon,False,Brooklyn,False
+music,5.0,False,False,40.6861547,NY,-73.9773518,2018-02-10,1,True,27,0,Sat,afternoon,True,Brooklyn,False
+performing-arts,25.0,False,False,40.691148,NY,-73.980799,2018-02-11,1,True,25,0,Sun,afternoon,True,Brooklyn,False
+performing-arts,25.0,False,False,40.691265,NY,-73.981225,2018-02-11,1,True,23,0,Sun,afternoon,True,Brooklyn,False
+lectures-books,10.0,False,False,40.689314700000004,NY,-73.9693396,2018-02-12,1,True,25,0,Mon,afternoon,False,Brooklyn,False
+food-and-drink,,True,True,40.6826571,NY,-73.97528220000002,2018-02-12,1,True,24,0,Mon,afternoon,True,Brooklyn,False
+performing-arts,,True,False,40.6786723207026,NY,-73.9589714418068,2018-02-12,1,True,25,0,Mon,evening,False,Brooklyn,False
+food-and-drink,25.0,False,False,40.689325399999994,NY,-73.9922942,2018-02-14,1,True,25,0,Wed,evening,False,Brooklyn,False
+nightlife,15.0,False,False,40.6785007,NY,-73.9833014,2018-02-14,1,True,20,0,Wed,evening,True,Brooklyn,False
+performing-arts,,True,False,40.6926226,NY,-73.98842579999999,2018-02-14,1,True,27,0,Wed,evening,True,Brooklyn,False
+performing-arts,20.0,False,False,40.727025399999995,NY,-73.95658309999997,2018-02-14,1,True,25,0,Wed,evening,True,Brooklyn,False
+food-and-drink,,True,False,40.715132087537,NJ,-74.04667189924,2017-12-22,1,True,26,0,Fri,evening,True,Jersey City,False
+music,10.0,False,False,40.7174797058105,NJ,-74.0438537597656,2017-12-23,1,True,21,0,Sat,evening,False,Jersey City,False
+other,45.0,False,False,40.719321,NJ,-74.0478499,2017-12-30,1,True,24,0,Sat,afternoon,False,Jersey City,False
+food-and-drink,75.0,False,False,40.7186662,NJ,-74.03487779999998,2017-12-31,1,True,27,0,Sun,evening,True,Jersey City,False
+nightlife,,True,False,40.715132087537,NJ,-74.04667189924,2017-12-31,1,True,24,0,Sun,evening,False,Jersey City,False
+kids-family,,True,False,40.7211164,NJ,-74.0470491,2018-01-06,1,True,22,1,Sat,morning,False,Jersey City,True
+kids-family,,True,False,40.729296999999995,NJ,-74.044512,2018-01-20,1,True,26,0,Sat,morning,False,Jersey City,True
+other,,True,False,40.7092002302021,NJ,-74.0399466756692,2018-01-21,1,True,21,0,Sun,morning,False,Jersey City,False
+music,15.0,False,False,40.7229151,NJ,-74.04445940000002,2018-01-26,1,True,25,0,Fri,evening,False,Jersey City,False
+kids-family,,True,False,40.7211164,NJ,-74.0470491,2018-01-27,1,True,23,15,Sat,evening,False,Jersey City,True
+performing-arts,100.0,False,False,40.7341002,NJ,-74.04451740000002,2018-01-27,1,True,24,0,Sat,evening,True,Jersey City,False
+sports-active-life,35.0,False,False,40.72075200000001,NJ,-74.045175,2018-01-28,1,True,29,0,Sun,morning,False,Jersey City,False
+food-and-drink,49.0,False,False,40.7173566,NJ,-74.0333774,2018-02-02,1,True,27,0,Fri,evening,True,Jersey City,False
+nightlife,,False,False,40.7239802,NJ,-74.0498443,2018-02-16,1,True,27,0,Fri,afternoon,True,Jersey City,False
+music,15.0,False,False,40.7229151,NJ,-74.04445940000002,2018-02-23,1,True,25,0,Fri,evening,False,Jersey City,False
+kids-family,,True,False,40.7210489,NJ,-74.0471042,2018-02-24,1,True,23,8,Sat,evening,False,Jersey City,True
+music,,True,False,40.718909064379396,NJ,-74.0325792708862,2018-02-24,1,True,26,0,Sat,morning,False,Jersey City,False
+food-and-drink,25.0,False,False,40.7218318,NJ,-74.0447003,2018-02-27,1,True,24,0,Tues,afternoon,True,Jersey City,False
+other,0.0,False,False,40.71756370000001,NJ,-74.03344270000002,2018-03-08,1,True,22,0,Thurs,morning,False,Jersey City,False
+festivals-fairs,15.0,False,False,40.7187046676618,NJ,-74.0332862271789,2018-03-10,1,True,22,0,Sat,afternoon,True,Jersey City,False
+food-and-drink,65.0,False,False,40.7144521915461,NJ,-74.037669933778,2018-03-15,1,True,6,0,Thurs,evening,True,Jersey City,False
+other,45.0,False,False,40.719321,NJ,-74.0478499,2018-03-17,1,True,23,0,Sat,afternoon,False,Jersey City,False
+food-and-drink,25.0,False,False,40.7218318,NJ,-74.0447003,2018-03-21,1,True,24,0,Wed,afternoon,True,Jersey City,False
+other,25.0,False,False,40.7173566,NJ,-74.0333774,2018-03-22,1,False,27,0,Thurs,afternoon,False,Jersey City,False
+performing-arts,10.0,False,False,40.7239802,NJ,-74.0498443,2018-03-28,1,True,26,0,Wed,evening,True,Jersey City,False
+festivals-fairs,15.0,False,False,40.7187046676618,NJ,-74.0332862271789,2018-03-31,1,True,26,0,Sat,afternoon,True,Jersey City,False
+food-and-drink,20.0,False,False,40.7173566,NJ,-74.0333774,2018-03-31,1,False,29,0,Sat,afternoon,True,Jersey City,False
+food-and-drink,25.0,False,True,40.7218318,NJ,-74.0447003,2018-04-02,1,True,24,30,Mon,afternoon,True,Jersey City,False
+other,25.0,False,False,40.717222,NJ,-74.043634,2018-04-09,1,True,26,0,Mon,afternoon,False,Jersey City,False
+lectures-books,,True,False,40.734613,NJ,-74.044656,2018-04-09,1,True,26,0,Mon,afternoon,True,Jersey City,False
+food-and-drink,25.0,False,False,40.7195797637316,NJ,-74.0426162257791,2018-04-10,1,True,26,0,Tues,afternoon,True,Jersey City,False
+music,15.0,False,False,40.7156602,NJ,-74.03966949999997,2018-04-13,1,True,28,0,Fri,afternoon,False,Jersey City,False
+performing-arts,15.0,False,False,40.7239802,NJ,-74.0498443,2018-04-16,1,True,22,0,Mon,evening,False,Jersey City,False
+charities,,True,False,40.7195797637316,NJ,-74.0426162257791,2018-04-19,1,True,22,0,Thurs,afternoon,False,Jersey City,False
+food-and-drink,15.0,False,False,40.7187046676618,NJ,-74.0332862271789,2018-04-21,1,True,24,0,Sat,afternoon,True,Jersey City,False
+festivals-fairs,60.0,False,False,40.7187046676618,NJ,-74.0332862271789,2018-04-21,1,True,24,0,Sat,afternoon,True,Jersey City,False
+food-and-drink,,False,False,40.7187046676618,NJ,-74.0332862271789,2018-04-21,1,True,26,0,Sat,afternoon,True,Jersey City,False
+performing-arts,10.0,False,False,40.717222,NJ,-74.043634,2018-04-29,1,True,26,0,Sun,afternoon,True,Jersey City,False
+sports-active-life,,True,False,40.7270989,NJ,-74.03811479999997,2018-05-05,1,True,25,0,Sat,morning,True,Jersey City,False
+food-and-drink,,False,False,40.720535999999996,NJ,-74.042976,2018-05-05,1,True,32,0,Sat,morning,True,Jersey City,False
+performing-arts,15.0,False,False,40.7239802,NJ,-74.0498443,2018-05-07,1,True,24,0,Mon,evening,False,Jersey City,False
+food-and-drink,35.0,False,False,40.721593,NJ,-74.031772,2018-05-08,1,True,27,0,Tues,evening,True,Jersey City,False
+performing-arts,10.0,False,False,40.7163978398076,NJ,-74.0363717477398,2018-05-09,2,True,28,0,Wed,evening,True,Jersey City,False
+music,15.0,False,False,40.7229151,NJ,-74.04445940000002,2018-05-18,1,True,25,0,Fri,evening,True,Jersey City,False
+nightlife,,False,False,40.7202578,NJ,-74.0443068,2018-05-24,1,True,9,0,Thurs,evening,True,Jersey City,False
+other,55.0,False,False,40.719316299999996,NJ,-74.0478598,2018-06-02,2,True,21,0,Sat,afternoon,True,Jersey City,False
+performing-arts,,True,False,40.7212531,NJ,-74.0459485,2018-06-13,3,True,22,0,Wed,evening,True,Jersey City,False
+festivals-fairs,60.0,False,False,40.7158706,NJ,-74.03735429999998,2018-06-14,1,True,32,0,Thurs,afternoon,True,Jersey City,False
+festivals-fairs,,True,False,40.7208252330624,NJ,-74.0322070805611,2018-06-16,1,True,29,1,Sat,morning,True,Jersey City,False
+performing-arts,20.0,False,False,40.72075200000001,NJ,-74.045175,2018-06-24,3,True,25,0,Sun,afternoon,True,Jersey City,False
+nightlife,5.0,False,False,40.7432511476929,NY,-73.95178927744679,2017-12-30,1,True,25,0,Sat,evening,False,Long Island City,False
+performing-arts,,True,False,40.7432511476929,NY,-73.95178927744679,2017-12-31,1,True,29,0,Sun,evening,False,Long Island City,False
+food-and-drink,0.0,False,False,40.74327529999999,NY,-73.9590448,2017-12-31,1,True,29,0,Sun,evening,False,Long Island City,False
+nightlife,0.0,False,False,40.742176,NY,-73.95884190000002,2018-02-04,1,True,29,0,Sun,afternoon,False,Long Island City,False
+sports-active-life,0.0,False,False,40.742176,NY,-73.95884190000002,2018-02-04,1,True,29,0,Sun,afternoon,False,Long Island City,False
+food-and-drink,17.0,False,False,40.749086,NY,-73.95536120000001,2018-03-17,1,True,27,8,Sat,morning,True,Long Island City,False
+sports-active-life,59.0,False,False,40.739934999999996,NY,-73.954453,2018-03-18,2,True,30,0,Sun,afternoon,True,Long Island City,False
+nightlife,,True,False,40.7432511476929,NY,-73.95178927744679,2018-04-23,1,True,19,4,Mon,evening,True,Long Island City,False
+performing-arts,,True,False,40.7422256,NY,-73.9563252,2018-05-02,1,True,31,0,Wed,evening,False,Long Island City,False
+food-and-drink,,True,False,40.742176,NY,-73.95884190000002,2018-05-05,1,True,30,0,Sat,afternoon,True,Long Island City,False
+visual-arts,,True,False,40.744157,NY,-73.952797,2018-05-19,1,True,28,1,Sat,morning,False,Long Island City,False
+sports-active-life,55.0,False,False,40.739934999999996,NY,-73.954453,2018-06-02,1,True,30,0,Sat,afternoon,True,Long Island City,False
+performing-arts,5.0,False,False,40.7432511476929,NY,-73.95178927744679,2018-06-02,1,True,30,0,Sat,evening,False,Long Island City,False
+kids-family,10.0,False,False,40.742176,NY,-73.95884190000002,2018-06-03,1,True,27,0,Sun,morning,True,Long Island City,True
+food-and-drink,,False,False,40.7470981842068,NY,-73.9549534404755,2018-06-09,1,True,25,1,Sat,afternoon,True,Long Island City,False
+performing-arts,25.0,False,False,40.7474537,NY,-73.9541673,2018-07-06,1,True,25,15,Fri,evening,False,Long Island City,False
+performing-arts,5.0,False,False,40.7432511476929,NY,-73.95178927744679,2018-07-20,2,True,26,0,Fri,evening,True,Long Island City,False
+festivals-fairs,42.57,False,False,40.74747814341,NY,-73.953936822615,2018-08-05,2,True,28,0,Sun,morning,True,Long Island City,False
+performing-arts,,True,False,40.7432511476929,NY,-73.95178927744679,2018-08-30,1,True,30,0,Thurs,evening,True,Long Island City,False
+performing-arts,5.0,False,False,40.7432511476929,NY,-73.95178927744679,2018-08-30,1,True,29,0,Thurs,evening,True,Long Island City,False
+food-and-drink,15.0,False,False,40.7438054,NY,-73.9515007,2018-09-20,1,True,30,0,Thurs,afternoon,True,Long Island City,False
+kids-family,20.0,False,False,40.741741919252895,NY,-73.96097775742491,2018-09-23,1,True,29,0,Sun,morning,False,Long Island City,True
+food-and-drink,17.0,False,False,40.749086,NY,-73.95536120000001,2018-10-13,1,True,26,8,Sat,evening,True,Long Island City,False
+food-and-drink,,True,False,40.7476248,NY,-73.95653259999997,2018-11-03,1,True,25,0,Sat,morning,True,Long Island City,False
+food-and-drink,,True,False,40.7476248,NY,-73.95653259999997,2018-11-17,1,True,24,0,Sat,morning,True,Long Island City,False
+food-and-drink,,True,False,40.745715866173796,NY,-73.9563131306885,2018-12-01,1,True,24,0,Sat,evening,True,Long Island City,False
+visual-arts,70.0,False,False,40.7474496,NY,-73.9541673,2018-12-04,1,True,27,0,Tues,evening,False,Long Island City,False
+festivals-fairs,,True,False,40.7484387,NY,-73.9505396,2018-12-06,1,True,25,3,Thurs,afternoon,False,Long Island City,False
+charities,75.0,False,False,40.749086,NY,-73.95536120000001,2018-12-09,1,True,27,0,Sun,afternoon,False,Long Island City,False
+performing-arts,5.0,False,False,40.7432511476929,NY,-73.95178927744679,2018-12-31,1,True,29,0,Mon,evening,True,Long Island City,False
+sports-active-life,20.0,False,False,40.7405823,NJ,-74.0314892,2017-12-29,1,True,26,0,Fri,evening,False,Hoboken,False
+music,40.0,False,False,40.735815133619,NJ,-74.0287538990378,2017-12-31,1,True,26,0,Sun,evening,False,Hoboken,False
+visual-arts,,True,False,40.737086,NJ,-74.042526,2018-01-13,1,True,21,0,Sat,evening,True,Hoboken,False
+visual-arts,35.0,False,False,40.7373865,NJ,-74.04217120000001,2018-02-04,1,True,31,0,Sun,afternoon,False,Hoboken,False
+performing-arts,10.0,False,False,40.74406629999999,NJ,-74.0314791,2018-03-02,1,True,27,1,Fri,evening,False,Hoboken,False
+kids-family,10.0,False,False,40.74406629999999,NJ,-74.0314791,2018-04-08,1,True,26,0,Sun,morning,True,Hoboken,True
+festivals-fairs,,True,False,40.73950900000001,NJ,-74.02771,2018-04-15,1,True,25,0,Sun,morning,True,Hoboken,False
+festivals-fairs,,True,False,40.743091583252,NJ,-74.0337829589844,2018-05-06,1,True,22,0,Sun,morning,True,Hoboken,False
+performing-arts,5.0,False,False,40.7475346,NJ,-74.03313359999999,2018-05-18,1,True,23,1,Fri,evening,False,Hoboken,False
+kids-family,65.0,False,False,40.7368027,NJ,-74.0409552,2018-06-16,1,True,28,0,Sat,morning,True,Hoboken,True
