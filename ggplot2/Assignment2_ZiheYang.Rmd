@@ -1,0 +1,868 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+myFile = "data/events_uncleaned.csv"
+MyData <- read.csv(myFile)
+# ggarrange, treemapify, ggTimeSeries
+```
+
+```{r}
+## LOOK AT Each Variable. Notice that there are 16 variables.
+str(MyData)
+# qualitative 
+# and quantitative variables.
+```
+
+#################################################################################################
+### Column 1: location.state
+#### This research is for events in New York State. Therefore, it should have single value - NY. 
+```{r}
+require(gridExtra)
+
+theme_set(theme_classic())
+
+BasePlot <- ggplot(MyData)
+
+f1 <- ggplot(MyData, aes(location.state, ..count.., fill = location.state)) + 
+  geom_bar(aes(location.state, fill = location.state)) + 
+  ggtitle("Figure 1: Event count in states ") + 
+  geom_text(aes(label=..count..),stat='count',position=position_dodge(0.9)) + 
+  theme( plot.title = element_text(size=11)) # Remove legend
+  
+
+# From the plot on the left, we notice that there are a few NJ events, which should be removed from this dataset.
+
+cat("\nBefore, there are", nrow(MyData), "events.")
+MyData$location.state <- as.character(MyData$location.state)
+MyData <- MyData[MyData$location.state == "NY",  ]
+cat("\nKeep only NY state events...")
+cat("\nAfter, there are", nrow(MyData), "events.")
+
+f2 <- ggplot(MyData, aes(location.state, ..count.., fill = location.state)) + 
+  geom_bar() + 
+  ggtitle("Figure 2: Event count in states after cleaning") +
+  geom_text(aes(label=..count..),stat='count',position=position_dodge(0.9)) + 
+  theme(legend.position = 'none', plot.title = element_text(size=11)) # Remove legend 
+
+grid.arrange(f1, f2, ncol=2) # Show two plots side by side
+
+
+# Now, this state varible is correct for having single value. Since it would not affeect the model, it should be removed now. 
+
+cat("\n\nBefore, there are", ncol(MyData), "columns.")
+MyData <- subset(MyData, select = -c(location.state))
+cat("\nRemove varible state ...")
+cat("\nAfter, there are", ncol(MyData), "columns.")
+
+#ggsave(file="something.pdf", g) 
+
+```
+
+#################################################################################################
+### Column 2: is_attractive
+#### It is the label of the dataset. 1 means attractive event, 0 means unattractive. 
+First, checking the missing values.  As the label, it should not have any missing values. 
+```{r}
+check_missing <- function(MyData, col){
+  count = sum(is.na(MyData[col]))
+  if(sapply(MyData,class)[col] != "numeric"){
+    count = count + sum(MyData[col] == "")
+  }
+  cat(col, ":",  count, "Missing Values.")
+}
+
+col = 'is_attractive'
+check_missing(MyData, col)
+```
+
+It does not have any none type or empty value. Then, using pie chart to check the percentage of each group. 
+
+```{r}
+count.data <- MyData %>%
+  group_by(is_attractive) %>%
+  tally() %>%
+  arrange(desc(is_attractive)) %>%
+  mutate(lab.ypos = cumsum(n) - 0.5*n) # Add label position
+
+ggplot(count.data, aes(x = "", y = n, fill = is_attractive)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = n), color = "white")+
+  theme_void() + # remove axes, background 
+  ggtitle("Figure 4: How many events are attractive?")
+```
+
+
+```{r}
+TempTable <- table(MyData[col])
+NumRows = nrow(MyData)
+MyLabels <- paste(names(TempTable), ": ", 
+                   (round(TempTable/NumRows,2))*100,"%", sep="")
+
+pie(TempTable, labels = MyLabels,
+    main="Figure 4: Are Events Attractive?") 
+```
+
+#################################################################################################
+### Column 3, 4, 5: is_free, is_official, has_image
+#### These varibles are boolean values. Need to check whether values are balanced. 
+
+```{r}
+
+f4 <- ggplot(MyData, aes(""))+
+    geom_bar(aes(fill=is_free), position="fill") + 
+    ggtitle("Figure 5: Free Events % ") + 
+    scale_fill_discrete(name = "Free") + 
+    theme( plot.title = element_text(size=11))
+
+f5 <- ggplot(MyData, aes(""))+
+    geom_bar(aes(fill=is_official), position="fill") + 
+    ggtitle("Figure 6: Official Events %") + 
+    scale_fill_discrete(name = "Official") + 
+    theme( plot.title = element_text(size=11))
+
+f6 <- ggplot(MyData, aes(""))+
+    geom_bar(aes(fill=has_image), position="fill") + 
+    ggtitle("Figure 7: With image %") + 
+    scale_fill_discrete(name = "With Image") + 
+    theme( plot.title = element_text(size=11))
+
+grid.arrange(f4, f5, f6, ncol=3) # Show  plots side by side
+
+cat("\nBefore, there are", ncol(MyData), "columns.")
+MyData <- subset(MyData, select = -c(is_official, has_image))
+cat("\nRemove varibles is_official and has_image...")
+cat("\nAfter, there are", ncol(MyData), "columns.")
+
+```
+
+#################################################################################################
+### Column 6: cost
+#### 
+
+```{r}
+col = 'cost'
+check_missing(MyData, col)
+
+MyData$cost[MyData$is_free == "True"] <- 0
+cat("\nReplace the empty value as 0 if is_free is True.\n")
+check_missing(MyData, col)
+
+cat("\n\nBefore, there are", nrow(MyData), "events.")
+MyData = MyData[complete.cases(MyData[ ,2]),]
+cat("\nRemove empty cost values...")
+cat("\nAfter, there are", nrow(MyData), "events.")
+```
+
+
+```{r}
+
+limit = quantile(MyData$cost, probs = c(0, 0.25, 0.5, 0.75, 1))['75%'] # 75% quartile
+
+f7 <- ggplot(MyData, aes(x=is_attractive, y=cost, fill=is_attractive)) + 
+  geom_boxplot()+
+  labs(title="Figure 9: Cost Distribution", x="Attractive Events", y = "Cost") + 
+  theme_classic() + 
+  theme(plot.title = element_text(size=12)) + 
+  scale_fill_discrete(name = "Attractive Event") 
+
+temp <- MyData[MyData$cost > 0 & MyData$cost < 20, ]
+
+f8 <- ggplot(temp, aes(x=is_attractive, y=cost, fill=is_attractive)) + 
+  geom_boxplot()+
+  labs(title=paste("Figure 10: Non-free events under $", limit), x="Attractive Events", y = "Cost") + 
+  theme_classic() + 
+  theme(legend.position = 'none', plot.title = element_text(size=12))
+
+grid.arrange(f7, f8, ncol=2) # Show two plots side by side
+
+```
+```{r}
+summary(MyData)
+```
+
+```{r}
+summary(temp)
+```
+
+#################################################################################################
+### Column 7: state
+#### It is date-type varible and means event start date
+
+```{r}
+table(MyData$city)
+```
+
+
+```{r}
+count.data <- MyData %>%
+  group_by(city) %>%
+  tally() %>%
+  arrange(desc(city)) %>%
+  mutate(lab.ypos = cumsum(n) - 0.5*n) 
+
+# Add label position
+
+mycols <- c("#EFC000FF", "#868686FF", "#CD534CFF")
+
+f9 <- ggplot(count.data, aes(x = 2, y = n, fill = city)) +
+  geom_bar(stat = "identity", color = "white") +
+  coord_polar(theta = "y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = n), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void()+
+  xlim(0.5, 2.5)+
+  ggtitle("Figure 10: Events Count of different Cities") + 
+  theme(plot.title = element_text(size=12))
+
+cat("\nBefore, there are", nrow(MyData), "events.")
+MyData <- MyData[MyData$city != "",  ]
+cat("\nRemove empty city values...")
+cat("\nAfter, there are", nrow(MyData), "events.")
+
+count.data <- MyData %>%
+  group_by(city) %>%
+  tally() %>%
+  arrange(desc(city)) %>%
+  mutate(lab.ypos = cumsum(n) - 0.5*n) # Add label position
+
+f10 <- ggplot(count.data, aes(x = 2, y = n, fill = city)) +
+  geom_bar(stat = "identity", color = "white") +
+  coord_polar(theta = "y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = n), color = "white")+
+  scale_fill_manual(values = mycols) +
+  theme_void()+
+  xlim(0.5, 2.5)+
+  ggtitle("Figure 11: Events Count after cleaning") + 
+  theme(plot.title = element_text(size=12))
+
+grid.arrange(f9, f10, ncol=2) # Show two plots side by side
+```
+
+http://lab.rady.ucsd.edu/sawtooth/RAnalytics/maps.html
+```{r}
+?register_google
+```
+
+```{r}
+library(ggmap)
+
+```
+
+```{r}
+ny <- map_data("state", region="new york")
+s1 <- ggplot() + geom_polygon(data=ny, aes(x=long, y=lat))
+s1
+```
+
+
+#################################################################################################
+### Column 7: category
+
+
+```{r}
+
+count.data <- MyData %>%
+  group_by(category) %>%
+  tally() 
+
+require(treemapify)
+ggplot(count.data, aes(area = n,  fill = -n, label = category)) +
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre", alpha = 0.9) + 
+  theme(legend.position = 'none') + # Remove legend
+  ggtitle("Figure 13: Event Categories")
+
+```
+
+
+```{r}
+count.data <- MyData %>%
+  group_by(category, city) %>%
+  tally() 
+
+ggplot(count.data, aes(area = n, fill = category, label = category)) +
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre", alpha = 0.9, reflow = T) +
+  facet_wrap( ~ city) +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "Figure 23: Event categories by city",
+    caption = "The area of each tile represents the event count as a
+      proportion of all events in that category",
+    fill = "Category"
+  )
+```
+
+
+```{r}
+count.data <- MyData %>%
+  group_by(category, time) %>%
+  tally() 
+
+ggplot(count.data, aes(area = n, fill = category, label = category)) +
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre", alpha = 0.9, reflow = T) +
+  facet_wrap( ~ time) +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "Figure 26: Event categories distribution by time",
+    caption = "The area of each tile represents the event count as a
+      proportion of all events in that category",
+    fill = "Category"
+  )
+```
+
+```{r}
+count.data <- MyData %>%
+  group_by(category, day_of_week) %>%
+  tally() 
+
+ggplot(count.data, aes(area = n, fill = category, label = category)) +
+  geom_treemap() +
+  geom_treemap_text(fontface = "italic", colour = "white", place = "centre", alpha = 0.9, reflow = T) +
+  facet_wrap( ~ day_of_week) +
+  theme(legend.position = "bottom") +
+  labs(
+    title = "Figure 23: Event categories by city",
+    caption = "The area of each tile represents the event count as a
+      proportion of all events in that category",
+    fill = "Category"
+  )
+```
+
+#################################################################################################
+### Column 6: repeat_times
+#### 
+
+```{r}
+
+f7 <- ggplot(MyData, aes(x=is_attractive, y=repeat_times, fill=is_attractive)) + 
+  geom_boxplot()+
+  labs(title="Figure 20: Repeat Times by Attractiveness", x="Attractive Events", y = "repeat_times") + 
+  theme_classic() + 
+  theme(plot.title = element_text(size=12)) + 
+  scale_fill_discrete(name = "Attractive Event") 
+
+temp <- MyData[MyData$repeat_times > 1 & MyData$repeat_times < 10, ]
+
+f8 <- ggplot(temp, aes(x=is_attractive, y=repeat_times, fill=is_attractive)) + 
+  geom_boxplot()+
+  labs(title="Figure 21: Repeated Events by Attractiveness", x="Attractive Events", y = "repeat_times") + 
+  theme_classic() + 
+  theme(legend.position = 'none', plot.title = element_text(size=12))
+
+grid.arrange(f7, f8, ncol=2) # Show two plots side by side
+
+```
+
+#################################################################################################
+### Column 3: event_date
+#### It is date-type varible and means event start date
+
+```{r}
+## NOw that we have dates, can visualize them with 
+## a time series vis option.
+```
+
+```{r}
+library(scales) # date_format
+freqs <- aggregate(MyData$event_date, by=list(MyData$event_date), FUN=length)
+freqs$names <- as.Date(freqs$Group.1, format="%Y-%m-%d")
+
+ggplot(freqs, aes(x=names, y=x)) + geom_line() +
+       scale_x_date(breaks="1 months", labels=date_format("%Y-%b"),
+                    limits=c(as.Date("2017-12-01"),as.Date("2019-10-01"))) +
+       ylab("Count") + xlab("Event Date") +
+       theme_bw() + theme(axis.text.x = element_text(angle=90)) + 
+       ggtitle("Figure 14: Daily Event Count")
+```
+
+```{r}
+###########################################
+
+MyData$day_of_week <- factor(MyData$day_of_week, levels=c("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"))
+
+MyData$time <- factor(MyData$time, levels=c("morning", "afternoon", "evening", "night"))
+
+
+(MyG1<-ggplot(MyData) + 
+    geom_bar(aes(day_of_week, fill = time)) + 
+    ggtitle("Figure 15: Event count by weekday & time")+
+    coord_flip())
+```
+
+
+#################################################################################################
+### Column 6: duration
+#### 
+
+```{r}
+f7 <- ggplot(MyData, aes(x=is_attractive, y=duration, fill=is_attractive)) + 
+  geom_violin(alpha=0.9,width=1)+
+  labs(title="Figure 16: Event Duration by Attractiveness", x="Attractive Events", y = "Duration") + 
+  theme_classic() + 
+  theme(plot.title = element_text(size=12)) + 
+  scale_fill_discrete(name = "Attractive Event") 
+
+temp <- MyData[MyData$duration > 0, ]
+
+f8 <- ggplot(temp, aes(x=is_attractive, y=duration, fill=is_attractive)) + 
+  geom_violin(alpha=0.9,width=1)+
+  labs(title="Figure 17: Event Duration (>0)", x="Attractive Events", y = "Duration") + 
+  theme_classic() + 
+  theme(legend.position = 'none', plot.title = element_text(size=12)) + 
+  geom_boxplot(width=0.1, fill="white")
+
+
+grid.arrange(f7, f8, ncol=2) # Show two plots side by side
+
+```
+
+
+```{r}
+#temp <- MyData[MyData$cost > 0, ]
+cat("\n\nBefore, there are", nrow(temp), "events.")
+cat("\nAfter, there are", nrow(MyData), "events.")
+```
+
+
+```{r}
+## Here - using density - we can get a deeper look
+MyPlot5 <- ggplot(temp, aes(duration))
+MyPlot5 + geom_density(aes(fill=is_attractive), alpha=0.3) + 
+  labs(title="Figure 18: Attractiveness Based on Event Duration", 
+       subtitle="Density Plot") + 
+  scale_fill_discrete(name = "Attractive Event") 
+```
+
+```{r}
+library("ggpubr")
+temp <- MyData[MyData$duration > 0, ]
+ggboxplot(temp, x = "day_of_week", y = "duration", 
+          color = "day_of_week", palette = c("#00AFBB", "#E7B800","green", "#00AFBB", "#E7B800","green", "#00AFBB"),
+          ylab = "Event Duration", xlab = "Weekday")
+
+
+ggboxplot(temp, x = "time", y = "duration", 
+          color = "time", palette = c("#00AFBB", "#E7B800","green", "#00AFBB", "#E7B800","green", "#00AFBB"),
+          ylab = "Event Duration", xlab = "Weekday")
+```
+
+```{r}
+library("ggpubr")
+temp <- MyData[MyData$duration > 0, ]
+
+p <- ggplot(temp,aes(x=day_of_week,y=duration,fill=day_of_week))+geom_violin(alpha=0.9,width=1, ) + 
+  ggtitle("Figure 24: Weekday and Duration") + labs(x="", y = "duration")
+
+p1 <- p +
+theme_bw()+ # Set as white background and black gridlines
+#coord_polar()+ 
+theme(legend.position = 'none') # Remove legend 
+
+p2 <- ggboxplot(temp, x = "time", y = "duration", 
+          color = "time", palette = c("#00AFBB", "#E7B800","green", "#00AFBB", "#E7B800","green", "#00AFBB"),
+          xlab = "") + theme(legend.position = 'none')  + ggtitle("Figure 25: Time and Duration")
+
+grid.arrange(p1, p2, ncol=2) #
+
+```
+
+
+```{r}
+## Box plots are great to look for odd values
+
+(MyL2<-ggplot(temp, aes(x=day_of_week, y=duration))+
+    geom_violin()+
+    geom_jitter(position=position_jitter(.01), aes(color=time))+
+    ggtitle("Test Score, Admissions, and Gender"))
+```
+
+#################################################################################################
+### Column 3: description_words
+#### It is date-type varible and means event start date
+
+```{r}
+ggplot(MyData, aes(x=description_words, y=cost, color=is_attractive)) +
+  geom_point() + # + geom_rug()
+  scale_color_discrete(name = "Attractive Event") +
+  ggtitle("Figure 19: Event description & Cost by Attractiveness") + 
+  labs(x="Number of words in description", y = "cost" )
+
+```
+
+```{r}
+(MyL1<-ggplot(MyData, aes(x=is_attractive, y=repeat_times))+
+    geom_boxplot()+
+    geom_jitter(position=position_jitter(.01), aes(color=city))+
+    ggtitle("Work Experience, Admissions, and Gender"))
+```
+
+
+```{r}
+library(plyr)
+(TEMPmeds <- ddply(MyData, .(city), summarize, 
+                   med = median(cost)))
+
+(TEMPmeans <- ddply(MyData, .(city), summarize, 
+                    mean_ = round(mean(cost),2)))
+
+## Next, we have an incorrect value....let's *SEE IT* first!
+## Then, let's use the MEDIAN to replace...
+
+(MyV1 <- ggplot(MyData, aes(x=city, y=cost, fill=city)) + 
+    geom_violin(trim=TRUE)+ 
+    geom_boxplot(width=0.1)+
+    geom_text(data = TEMPmeds, 
+              aes(x = city, y = med, label = med), 
+                        size = 3, vjust = -1.5,hjust=-1)+
+    ggtitle("Cost and City")+
+    geom_jitter(shape=16, position=position_jitter(0.2)))
+```
+
+
+
+### EDA
+
+```{r}
+#ggcorr(MyData[,c(5,6,7,8)], low = "light yellow", mid = "orange", high = "blue")
+#https://www.rdocumentation.org/packages/GGally/versions/1.5.0/topics/ggcorr
+
+library(GGally)
+
+ggcorr(
+  MyData,
+  method = "pairwise", ##c("pairwise", "pearson"),
+  #cor_matrix = NULL,
+  #nbreaks = NULL,
+  digits = 3,
+  name = "r-values",
+  ## COlors....
+  low = "#FFFFFF",
+  mid = "#EEEEEE",
+  high = "#F21A00",
+  midpoint = 0,  ##effects color change-overs
+  #palette = NULL,
+  geom = "tile",  ##options:"tile", "circle", "text" or "blank"
+  min_size = 2,
+  max_size = 6,
+  label = TRUE,
+  label_alpha = FALSE,
+  label_color = "black",
+  label_round = 3,
+  label_size = 4,
+  limits = c(-1, 1),  ## use c(-1,1) to show full correlation range
+  #drop = is.null(limits) || identical(limits, FALSE),
+  layout.exp = 0,
+  legend.position = "right",
+  legend.size = 9
+) + ggtitle("Figure 22: Correlation Matrix of Numeric Variables")
+  
+```
+
+```{r}
+names(MyData)
+```
+
+```{r}
+## City and Cost  
+ggpairs(data=MyData, columns=c(13,2), title=" City and Cost",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+## City and Duration  
+ggpairs(data=MyData, columns=c(13,9), title=" City and Duration",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+## City and Description  
+ggpairs(data=MyData, columns=c(13,8), title="Figure 18: City and Description",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+## City and Repeat_Times  
+ggpairs(data=MyData, columns=c(13,7), title=" City and Repeat_Times",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+```
+
+
+```{r}
+## Weekday and Cost  
+ggpairs(data=MyData, columns=c(10,2), title=" Weekday and Cost",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+ggpairs(data=MyData, columns=c(10,9), title=" Weekday and Duration",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+ggpairs(data=MyData, columns=c(10,8), title=" Figure 19: Weekday and Description",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+ggpairs(data=MyData, columns=c(10,7), title=" Weekday and Repeat Times",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+```
+
+
+```{r}
+## Weekday and Cost  
+ggpairs(data=MyData, columns=c(11,2), title=" Weekday and Cost",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+ggpairs(data=MyData, columns=c(11,9), title=" Weekday and Duration",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+ggpairs(data=MyData, columns=c(11,8), title=" Figure 19: Weekday and Description",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+
+ggpairs(data=MyData, columns=c(11,7), title=" Weekday and Repeat Times",
+        mapping=ggplot2::aes(color = is_attractive),
+        lower=list(combo=wrap("facethist",binwidth=1)))
+```
+
+
+
+```{r}
+
+temp <- MyData[MyData$cost > 0 & MyData$cost < 20, ]
+temp <- temp[temp$duration > 0, ]
+
+## Is duration related to cost?
+p <- ggplot(temp, aes(cost, duration)) +
+  geom_point(shape = 21, 
+             color = "lightblue", 
+             fill = "white", 
+             size = 2, 
+             stroke = 2)
+
+## Let's add a regression line
+## The lm fits a straight line trying to minimize
+## the residual sum of squares. 
+
+p1 <- (p + geom_smooth(method='lm', formula= y~x) + ggtitle("Figure 27: Relationship between Cost and Duration (Linear & Loess Models)"))
+
+## With loess, The loess model fits a smooth curve.
+p2 <- (p + stat_smooth(method = "loess", formula = y ~ x, size = 1))
+
+
+grid.arrange(p1, p2, nrow = 2)
+
+## Correlation
+cor(MyData$cost,MyData$duration)
+## nope! There is no correlation here.
+
+```
+
+
+
+
+# Association Rule
+
+```{r}
+str(MyData)
+```
+
+```{r}
+library(arules)
+cols <- c("category", "is_free", "day_of_week", "time", "city", "is_attractive")
+df <- MyData[cols]
+```
+
+Applying Apriori
+Train the rules with custom parameters, and use inspect to inspect the rules.
+```{r}
+rules <- apriori(df, parameter = list(minlen=2, supp=0.02, conf=0.8), appearance = list(rhs=c("is_attractive=True", "is_attractive=False"), default="lhs"), control = list(verbose=F))
+
+rules.sorted <- sort(rules, by="lift")
+inspect(rules.sorted)
+```
+
+Pruning Redundnt Rules
+There are rules that are subset of other rules. They can be pruned.
+
+```{r}
+subset.matrix <- is.subset(rules.sorted,rules.sorted)
+subset.matrix[lower.tri(subset.matrix, diag=T)] <- F
+redundant <- apply(subset.matrix, 2, any)
+rules.pruned <- rules.sorted[!redundant]
+inspect(rules.pruned)
+```
+
+
+Evaluate the rules 
+```{r}
+interestMeasure(rules.pruned, c("support", "chiSquare", "confidence", "conviction", "cosine", "coverage", "leverage", "lift", "oddsRatio"), titanic.raw)
+```
+
+Visualize the rules.
+```{r}
+library(arulesViz)
+plot(rules.pruned, main = "Figure 28: Scatter plot for 7 Rules")
+```
+
+```{r}
+plot(rules.pruned, method="grouped", main = "Figure 29: Grouped Matrix for 7 Rules", size = 1)
+```
+
+
+```{r}
+plot(rules.pruned, method="graph", main = "Figure 30: Graph for 7 Rules", cex = 0.75) 
+```
+
+# Random Forest 
+4.1 Split into training & test sets
+```{r}
+library('randomForest') 
+
+## 75% of the sample size
+smp_size <- floor(0.75 * nrow(MyData))
+
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind <- sample(seq_len(nrow(MyData)), size = smp_size)
+
+# Split the data back into a train set and a test set
+train <- MyData[train_ind, ]
+test <- MyData[-train_ind, ]
+nrow(train)
+nrow(test)
+```
+
+```{r}
+names(MyData)
+```
+
+
+4.2 Building the model
+We then build our model using randomForest on the training set.
+
+```{r}
+# Set a random seed
+set.seed(754)
+
+# Build the model (note: not all possible variables are used)
+rf_model <- randomForest(factor(is_attractive) ~ category + cost + is_free + latitude + longitude +
+                                            repeat_times + description_words + duration + 
+                                            day_of_week + time + city,
+                                            data = train)
+
+hist(treesize(rf_model))
+
+rf_model
+
+# Show model error
+plot(rf_model, ylim=c(0,0.5), main = "Figure 31: Random Forest Model")
+legend('topright', colnames(rf_model$err.rate), col=1:3, fill=1:3)
+```
+
+
+
+
+The black line shows the overall error rate which falls below 20%. The red and green lines show the error rate for ‘died’ and ‘survived’ respectively. We can see that right now we’re much more successful predicting death than we are survival. What does that say about me, I wonder?
+
+4.3 Variable importance
+Let’s look at relative variable importance by plotting the mean decrease in Gini calculated across all trees.
+
+```{r}
+# Get importance
+importance    <- importance(rf_model)
+varImportance <- data.frame(Variables = row.names(importance), 
+                            Importance = round(importance[ ,'MeanDecreaseGini'],2))
+
+# Create a rank variable based on importance
+rankImportance <- varImportance %>%
+  mutate(Rank = paste0('#',dense_rank(desc(Importance))))
+
+# Use ggplot2 to visualize the relative importance of variables
+ggplot(rankImportance, aes(x = reorder(Variables, Importance), 
+    y = Importance, fill = Importance)) +
+  geom_bar(stat='identity') + 
+  geom_text(aes(x = Variables, y = 0.5, label = Rank),
+    hjust=0, vjust=0.55, size = 4, colour = 'red') +
+  labs(x = 'Variables', title = "Figure 32: Features Importance") +
+  coord_flip()  
+```
+Whoa, glad we made our title variable! It has the highest relative importance out of all of our predictor variables. I think I’m most surprised to see that passenger class fell to #5, but maybe that’s just bias coming from watching the movie Titanic too many times as a kid.
+
+4.4 Prediction!
+We’re ready for the final step — making our prediction! When we finish here, we could iterate through the preceding steps making tweaks as we go or fit the data using different models or use different combinations of variables to achieve better predictions. But this is a good starting (and stopping) point for me now.
+
+```{r}
+# Predict using the test set
+prediction <- predict(rf_model, test)
+confMat <- table(test$is_attractive,prediction)
+cat("\nRandom forest matrix: \n")
+confMat
+accuracy <- sum(diag(confMat))/sum(confMat)
+cat("\nRandom forest accuracy is", accuracy)
+```
+
+```{r}
+install.packages("ggstance") 
+```
+
+```{r}
+library(jtools)
+library(ggstance)
+```
+
+
+
+```{r}
+##Lets run Logistic regression model
+
+log.mod <- glm(is_attractive ~ category + cost + is_free + latitude + longitude +
+                                            repeat_times + description_words + duration + 
+                                            day_of_week + time + city, family = binomial(link=logit), data = train)
+
+log.mod <- glm(is_attractive ~ category + repeat_times + duration + day_of_week + city, family = binomial(link=logit), data = train)
+
+###Check the summary
+#summary(log.mod)
+cat("\n\n")
+summ(log.mod)
+
+
+
+#effect_plot(model = log.mod, pred = duration, plot.points = TRUE, interval = TRUE,)
+```
+
+
+```{r}
+plot_summs(log.mod)
+#plot_coefs(log.mod)
+
+```
+
+```{r}
+test.probs <- predict(log.mod, newdata=test,type =  "response")
+
+confMat <- table(test$is_attractive,test.probs>0.5)
+cat("\nLogistic regression matrix: \n")
+confMat
+accuracy <- sum(diag(confMat))/sum(confMat)
+cat("\nLogistic regression accuracy is", accuracy)
+
+```
+
+
+
+
+
+
+
+
+
