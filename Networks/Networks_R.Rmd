@@ -1,0 +1,367 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+
+library(networkD3)
+library(arules)
+library(rtweet)
+library(twitteR)
+library(ROAuth)
+library(jsonlite)
+library(rjson)
+library(tokenizers)
+library(tidyverse)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+library(syuzhet)
+library(stringr)
+library(arulesViz)
+library(igraph)
+
+```
+```{r}
+TransactionTweetsFile = "tweets.csv"
+## Read the transactions data into a dataframe
+TweetDF <- read.csv(TransactionTweetsFile, 
+                    header = FALSE, sep = ",")
+
+## Convert all columns to char 
+TweetDF<-TweetDF %>%
+  mutate_all(as.character)
+
+# We can now remove certain words
+TweetDF[TweetDF == "t.co"] <- ""
+TweetDF[TweetDF == "rt"] <- ""
+TweetDF[TweetDF == "http"] <- ""
+TweetDF[TweetDF == "https"] <- ""
+
+## Clean with grepl - every row in each column
+MyDF<-NULL
+MyDF2<-NULL
+for (i in 1:ncol(TweetDF)){
+  MyList=c() 
+  MyList2=c() # each list is a column of logicals ...
+  MyList=c(MyList,grepl("[[:digit:]]", TweetDF[[i]]))
+  MyDF<-cbind(MyDF,MyList)  ## create a logical DF
+  MyList2=c(MyList2,(nchar(TweetDF[[i]])<4 | nchar(TweetDF[[i]])>9))
+  MyDF2<-cbind(MyDF2,MyList2) 
+  ## TRUE is when a cell has a word that contains digits
+}
+
+## For all TRUE, replace with blank
+TweetDF[MyDF] <- ""
+TweetDF[MyDF2] <- ""
+TweetDF
+```
+```{r}
+# Now we save the dataframe using the write table command 
+write.table(TweetDF, file = "tweetsTrans.csv", col.names = FALSE, 
+            row.names = FALSE, sep = ",")
+TweetTrans <- read.transactions("tweetsTrans.csv", sep =",", 
+                                format("basket"),  rm.duplicates = TRUE)
+```
+
+```{r}
+TweetTrans
+```
+
+
+```{r}
+############ Create the Rules  - Relationships ###########
+TweetTrans_rules = arules::apriori(TweetTrans, 
+        parameter = list(support=.01, conf=.15, minlen=2))
+
+## inspect(TweetTrans_rules[1:30])
+##  Sort by Conf
+SortedRules_conf <- sort(TweetTrans_rules, by="confidence", decreasing=TRUE)
+## inspect(SortedRules_conf[1:30])
+## Sort by Sup
+SortedRules_sup <- sort(TweetTrans_rules, by="support", decreasing=TRUE)
+## inspect(SortedRules_sup[1:30])
+## Sort by Lift
+SortedRules_lift <- sort(TweetTrans_rules, by="lift", decreasing=TRUE)
+## inspect(SortedRules_lift[1:30])
+
+TweetTrans_rules<-SortedRules_lift[1:25]
+inspect(TweetTrans_rules)
+```
+
+```{r}
+Rules_DF2<-DATAFRAME(TweetTrans_rules, separate = TRUE)
+
+## Convert to char
+Rules_DF2$LHS<-as.character(Rules_DF2$LHS)
+Rules_DF2$RHS<-as.character(Rules_DF2$RHS)
+
+## Remove all {}
+Rules_DF2[] <- lapply(Rules_DF2, gsub, pattern='[{]', replacement='')
+Rules_DF2[] <- lapply(Rules_DF2, gsub, pattern='[}]', replacement='')
+
+head(Rules_DF2)
+```
+
+```{r}
+
+## USING LIFT
+Rules_L<-Rules_DF2[c(1,2,5)]
+names(Rules_L) <- c("SourceName", "TargetName", "Weight")
+
+
+## USING SUP
+Rules_S<-Rules_DF2[c(1,2,3)]
+names(Rules_S) <- c("SourceName", "TargetName", "Weight")
+
+
+## USING CONF
+Rules_C<-Rules_DF2[c(1,2,4)]
+names(Rules_C) <- c("SourceName", "TargetName", "Weight")
+
+## CHoose and set
+
+Rules_Sup<-Rules_L
+Rules_Sup
+
+# write.csv(Rules_Sup,"network.csv", row.names = FALSE)
+
+```
+
+```{r}
+
+Rules_Sup<-Rules_L
+
+(edgeList<-Rules_Sup)
+MyGraph <- igraph::simplify(igraph::graph.data.frame(edgeList, directed=TRUE))
+plot(MyGraph)
+
+# taking the log to improve it
+V(MyGraph)$size <- log(strength(MyGraph)) * 4 + 3
+
+# png(filename="lift.png",  res = 140, width = 900, height = 600)
+
+par(mar=c(0,0,0,0))
+plot(MyGraph,
+     vertex.color = "pink", # change color of nodes
+     vertex.label.color = "black", # change color of labels
+     vertex.label.cex = 0.8, # change size of labels to 75% of original size
+     edge.curved=.3, # add a 25% curve to the edges
+     edge.color="#A2D9CE",
+     edge.arrow.size = .5, vertex.frame.color = "white") # change edge color to grey
+
+#dev.off()
+
+```
+
+
+```{r}
+nodeList <- data.frame(ID = c(0:(igraph::vcount(MyGraph) - 1)), 
+                       # because networkD3 library requires IDs to start at 0
+                       nName = igraph::V(MyGraph)$name)
+## Node Degree
+(nodeList <- cbind(nodeList, nodeDegree=igraph::degree(MyGraph, 
+                    v = igraph::V(MyGraph), mode = "all")))
+
+## Betweenness
+BetweenNess <- igraph::betweenness(MyGraph, 
+      v = igraph::V(MyGraph), 
+      directed = TRUE) 
+
+## This can change the BetweenNess value if needed
+BetweenNess<-BetweenNess * 10
+
+nodeList <- cbind(nodeList, nodeBetweenness=BetweenNess)
+
+getNodeID <- function(x){
+  which(x == igraph::V(MyGraph)$name) - 1  #IDs start at 0
+}
+getNodeID("equality")
+
+edgeList <- plyr::ddply(
+  Rules_Sup, .variables = c("SourceName", "TargetName" , "Weight"), 
+  function (x) data.frame(SourceID = getNodeID(x$SourceName), 
+                          TargetID = getNodeID(x$TargetName)))
+
+# head(edgeList)
+
+DiceSim <- igraph::similarity.dice(MyGraph, vids = igraph::V(MyGraph), mode = "all")
+head(DiceSim)
+
+#Create  data frame that contains the Dice similarity between any two vertices
+F1 <- function(x) {data.frame(diceSim = DiceSim[x$SourceID +1, x$TargetID + 1])}
+#Place a new column in edgeList with the Dice Sim
+head(edgeList)
+edgeList <- plyr::ddply(edgeList,
+                        .variables=c("SourceName", "TargetName", "Weight", 
+                                               "SourceID", "TargetID"), 
+                        function(x) data.frame(F1(x)))
+#head(edgeList)
+
+COLOR_P <- colorRampPalette(c("#00FF00", "#FF0000"), 
+                            bias = nrow(edgeList), space = "rgb", 
+                            interpolate = "linear")
+COLOR_P
+(colCodes <- COLOR_P(length(unique(edgeList$diceSim))))
+edges_col <- sapply(edgeList$diceSim, 
+                    function(x) colCodes[which(sort(unique(edgeList$diceSim)) == x)])
+nrow(edges_col)
+
+D3_network_Tweets <- networkD3::forceNetwork(
+  Links = edgeList, # data frame that contains info about edges
+  Nodes = nodeList, # data frame that contains info about nodes
+  Source = "SourceID", # ID of source node 
+  Target = "TargetID", # ID of target node
+  Value = "Weight", # value from the edge list (data frame) that will be used to value/weight relationship amongst nodes
+  NodeID = "nName", # value from the node list (data frame) that contains node description we want to use (e.g., node name)
+  Nodesize = "nodeBetweenness",  # value from the node list (data frame) that contains value we want to use for a node size
+  Group = "nodeDegree",  # value from the node list (data frame) that contains value we want to use for node color
+  height = 500, # Size of the plot (vertical)
+  width = 800,  # Size of the plot (horizontal)
+  fontSize = 15, # Font size
+  linkDistance = networkD3::JS("function(d) { return d.value * 10000; }"), # Function to determine distance between any two nodes, uses variables already defined in forceNetwork function (not variables from a data frame)
+  linkWidth = networkD3::JS("function(d) { return d.value; }"),# Function to determine link/edge thickness, uses variables already defined in forceNetwork function (not variables from a data frame)
+  opacity = 0.9, # opacity
+  zoom = TRUE, # ability to zoom when click on the node
+  opacityNoHover = 0.9, # opacity of labels when static
+  linkColour = "black"   ###"edges_col"red"# edge colors
+) 
+
+# Save network as html file
+networkD3::saveNetwork(D3_network_Tweets, 
+                       "NetD3_lift.html", selfcontained = TRUE)
+
+```
+
+
+```{r}
+
+Rules_Sup<-Rules_C
+
+(edgeList<-Rules_Sup)
+MyGraph <- igraph::simplify(igraph::graph.data.frame(edgeList, directed=TRUE))
+
+png(filename="confident.png",  res = 140, width = 900, height = 600)
+
+par(mar=c(0,0,0,0)); 
+plot(MyGraph,
+     vertex.color = "#AED6F1", # change color of nodes
+     vertex.label.color = "black", # change color of labels
+     vertex.label.cex = .7, # change size of labels to 75% of original size
+     edge.color="#EC7063",edge.arrow.size = .5,
+     layout=layout_on_grid, vertex.frame.color = "white") # change edge color to grey
+
+dev.off()
+
+```
+
+
+```{r}
+Rules_Sup<-Rules_S
+
+(edgeList<-Rules_Sup)
+MyGraph <- igraph::simplify(igraph::graph.data.frame(edgeList, directed=FALSE))
+
+
+V(MyGraph)$label <- ifelse(strength(MyGraph)>=2.5, V(MyGraph)$name, NA )
+
+#png(filename="support.png",  res = 140, width = 900, height = 600)
+
+par(mar=c(0,0,0,0)); 
+plot(MyGraph,
+     vertex.color = "#A2D9CE", # change color of nodes
+     vertex.label.color = "black", # change color of labels
+     vertex.label.cex = .75, # change size of labels to 75% of original size
+     edge.curved=.25, # add a 25% curve to the edges
+     edge.color="#0E6655",
+     layout=layout_as_tree, main="", vertex.frame.color = "white") # change edge color to grey
+
+#dev.off()
+```
+
+
+```{r}
+nodeList <- data.frame(ID = c(0:(igraph::vcount(MyGraph) - 1)), 
+                       # because networkD3 library requires IDs to start at 0
+                       nName = igraph::V(MyGraph)$name)
+## Node Degree
+(nodeList <- cbind(nodeList, nodeDegree=igraph::degree(MyGraph, 
+                    v = igraph::V(MyGraph), mode = "all")))
+
+## Betweenness
+BetweenNess <- igraph::betweenness(MyGraph, 
+      v = igraph::V(MyGraph), 
+      directed = TRUE) 
+
+## This can change the BetweenNess value if needed
+## BetweenNess<-BetweenNess * 5
+
+nodeList <- cbind(nodeList, nodeBetweenness=BetweenNess)
+
+getNodeID <- function(x){
+  which(x == igraph::V(MyGraph)$name) - 1  #IDs start at 0
+}
+getNodeID("equality")
+
+edgeList <- plyr::ddply(
+  Rules_Sup, .variables = c("SourceName", "TargetName" , "Weight"), 
+  function (x) data.frame(SourceID = getNodeID(x$SourceName), 
+                          TargetID = getNodeID(x$TargetName)))
+
+# head(edgeList)
+
+DiceSim <- igraph::similarity.dice(MyGraph, vids = igraph::V(MyGraph), mode = "all")
+head(DiceSim)
+
+#Create  data frame that contains the Dice similarity between any two vertices
+F1 <- function(x) {data.frame(diceSim = DiceSim[x$SourceID +1, x$TargetID + 1])}
+#Place a new column in edgeList with the Dice Sim
+head(edgeList)
+edgeList <- plyr::ddply(edgeList,
+                        .variables=c("SourceName", "TargetName", "Weight", 
+                                               "SourceID", "TargetID"), 
+                        function(x) data.frame(F1(x)))
+#head(edgeList)
+
+```
+```{r}
+COLOR_P <- colorRampPalette(c("#00FF00", "#FF0000"), 
+                            bias = nrow(edgeList), space = "rgb", 
+                            interpolate = "linear")
+COLOR_P
+(colCodes <- COLOR_P(length(unique(edgeList$diceSim))))
+edges_col <- sapply(edgeList$diceSim, 
+                    function(x) colCodes[which(sort(unique(edgeList$diceSim)) == x)])
+nrow(edges_col)
+
+## NetworkD3 Object
+#https://www.rdocumentation.org/packages/networkD3/versions/0.4/topics/forceNetwork
+
+D3_network_Tweets <- networkD3::forceNetwork(
+  Links = edgeList, # data frame that contains info about edges
+  Nodes = nodeList, # data frame that contains info about nodes
+  Source = "SourceID", # ID of source node 
+  Target = "TargetID", # ID of target node
+  Value = "Weight", # value from the edge list (data frame) that will be used to value/weight relationship amongst nodes
+  NodeID = "nName", # value from the node list (data frame) that contains node description we want to use (e.g., node name)
+  Nodesize = "nodeBetweenness",  # value from the node list (data frame) that contains value we want to use for a node size
+  Group = "nodeDegree",  # value from the node list (data frame) that contains value we want to use for node color
+  height = 500, # Size of the plot (vertical)
+  width = 800,  # Size of the plot (horizontal)
+  fontSize = 15, # Font size
+  linkDistance = networkD3::JS("function(d) { return d.value * 10000; }"), # Function to determine distance between any two nodes, uses variables already defined in forceNetwork function (not variables from a data frame)
+  linkWidth = networkD3::JS("function(d) { return d.value; }"),# Function to determine link/edge thickness, uses variables already defined in forceNetwork function (not variables from a data frame)
+  opacity = 0.9, # opacity
+  zoom = TRUE, # ability to zoom when click on the node
+  opacityNoHover = 0.9, # opacity of labels when static
+  linkColour = "red"   ###"edges_col"red"# edge colors
+) 
+
+# Save network as html file
+networkD3::saveNetwork(D3_network_Tweets, 
+                       "NetD3_support.html", selfcontained = TRUE)
+```
+
+
